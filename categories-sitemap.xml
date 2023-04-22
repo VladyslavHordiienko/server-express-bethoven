@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<urlset>
+  <url>
+    <loc>https://example.com/korm-dlya-sobak</loc>
+    <lastmod>2023-02-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://example.com/suhiy-korm-dly-sobak</loc>
+    <lastmod>2023-02-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://example.com/tovari-dlya-sobak</loc>
+    <lastmod>2023-02-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+  <url>
+    <loc>https://example.com/vologiy-korm-dly-sobak</loc>
+    <lastmod>2023-02-30</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>
+</urlset>
