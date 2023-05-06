@@ -4,9 +4,10 @@ class PaymentsController {
   async getAll(req, res) {
     try {
       const payments = await Payments.findAll();
+      if (!payments) return res.status(404).json('Ошибка получения информации для платежа');
       return res.json(payments);
     } catch (error) {
-      return res.status(404).json('Payments Error');
+      return res.status(404).json('Ошибка получения информации для платежа');
     }
   }
 }

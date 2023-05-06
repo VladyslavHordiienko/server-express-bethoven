@@ -5,8 +5,6 @@ const cors = require('cors');
 const fileUpload = require('express-fileupload');
 const router = require('./routes/index');
 
-const errorHandler = require('./middleware/ErrorHandlingMiddleware');
-
 const PORT = process.env.PORT || 4000;
 
 const app = express();
@@ -15,9 +13,6 @@ app.use(express.json());
 app.use('/static', express.static('static'));
 app.use(fileUpload({}));
 app.use('/api', router);
-
-// обработка ошибок, последний middleware
-app.use(errorHandler);
 
 const start = async () => {
   try {

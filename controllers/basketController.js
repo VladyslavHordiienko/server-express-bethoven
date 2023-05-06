@@ -1,16 +1,9 @@
-const uniqid = require('uniqid');
-const path = require('path');
-const { Basket } = require('../models/models');
-const ApiError = require('../error/ApiError');
 const nodemailer = require('nodemailer');
 
-const { Op } = require('sequelize');
-
 class basketController {
-  async create(req, res, next) {
+  async create(req, res) {
     const { products_list, contact_info, delivery_info, payment_info, totalPrice } = req.body;
 
-    console.log(products_list);
     try {
       let productListHtml = '';
 
@@ -191,148 +184,10 @@ class basketController {
         text: 'New Order', // plain text body
         html: html, // html body
       });
-      console.log('Message sent: %s', info.messageId);
       return res.json('ok');
     } catch (error) {
-      console.log(error);
-      next(ApiError.badRequest(error.message));
+      return res.status('404').json('Ошибка корзины');
     }
-  }
-  async getAll(req, res) {
-    let { limit, page, filterBy, search, category } = req.query;
-
-    limit = parseInt(limit) || 9;
-    page = parseInt(page) || 1;
-
-    let offset = page * limit - limit;
-
-    if (search) {
-      let count = await Product.count({
-        limit,
-        offset,
-        where: {
-          product_name: { [Op.like]: '%' + search + '%' },
-        },
-      });
-      let products = await Product.findAll({
-        limit,
-        offset,
-        where: {
-          product_name: { [Op.like]: '%' + search + '%' },
-        },
-        include: [
-          {
-            model: ProductInfo,
-            as: 'info',
-          },
-        ],
-      });
-      return res.json({ count, products });
-    }
-    if (category) {
-      let count = await Product.count({
-        limit,
-        offset,
-        where: {
-          categoryId: category,
-        },
-      });
-      let products = await Product.findAll({
-        limit,
-        offset,
-        where: {
-          categoryId: category,
-        },
-        include: [
-          {
-            model: ProductInfo,
-            as: 'info',
-          },
-        ],
-      });
-      return res.json({ count, products });
-    }
-    let count = await Product.count();
-    let products = await Product.findAll({
-      limit,
-      offset,
-      include: [
-        {
-          model: ProductInfo,
-          as: 'info',
-        },
-      ],
-    });
-    return res.json({ count, products });
-
-    // if (filterBy) {
-    //   let filterKeys = filterBy.split(',').map((filter) => ({ description_back: filter }));
-
-    //   let count = await Product.count({
-    //     limit,
-    //     offset,
-    //     include: [
-    //       {
-    //         model: ProductInfo,
-    //         as: 'info',
-    //         where: {
-    //           [Op.or]: filterKeys,
-    //         },
-    //       },
-    //     ],
-    //   });
-    //   let products = await Product.findAll({
-    //     limit,
-    //     offset,
-    //     include: [
-    //       {
-    //         model: ProductInfo,
-    //         as: 'info',
-    //         where: {
-    //           [Op.or]: filterKeys,
-    //         },
-    //       },
-    //     ],
-    //   });
-    //   return res.json({ count, products });
-    // } else {
-    //   let count = await Product.count();
-    //   let products = await Product.findAll({
-    //     limit,
-    //     offset,
-    //     include: [
-    //       {
-    //         model: ProductInfo,
-    //         as: 'info',
-    //       },
-    //     ],
-    //   });
-    //   return res.json({ count, products });
-    // }
-
-    // let count = await Product.count();
-    // if (filterBy) {
-    //   let filterItems = filterBy.split(',');
-    //   let filtered = products.filter((product) => {
-    //     return filterItems.some((filter) => {
-    //       for (const el of product.info) {
-    //         return el.description_back === filter;
-    //       }
-    //     });
-    //   });
-    //   return res.json({ count: filtered.length, products: filtered });
-    // }
-    // return res.json({ count, products });
-  }
-  async getOne(req, res) {
-    const { slug } = req.params;
-
-    const product = await Product.findOne({
-      where: { slug },
-      include: [{ model: ProductInfo, as: 'info' }],
-    });
-
-    return res.json(product);
   }
 }
 module.exports = new basketController();

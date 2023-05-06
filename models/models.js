@@ -2,17 +2,6 @@ const sequelize = require('../db');
 
 const { DataTypes } = require('sequelize');
 
-const User = sequelize.define('user', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  email: { type: DataTypes.STRING, unique: true },
-  password: { type: DataTypes.STRING },
-  role: { type: DataTypes.STRING, defaultValue: 'User' },
-});
-
-const BasketProduct = sequelize.define('basket_product', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-});
-
 const Product = sequelize.define('product', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   product_code: { type: DataTypes.INTEGER, allowNull: false, unique: true },
@@ -58,11 +47,6 @@ const ProductAttr = sequelize.define('product_attr', {
   category_list: { type: DataTypes.JSON, allowNull: false },
 });
 
-const Rating = sequelize.define('rating', {
-  id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-  rate: { type: DataTypes.FLOAT, allowNull: false },
-});
-
 const ProductModification = sequelize.define('product_modification', {
   id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
   factory_articul: { type: DataTypes.INTEGER, allowNull: false },
@@ -99,12 +83,6 @@ const Novaposhta = sequelize.define('novaposhta', {
 Category.hasMany(Product);
 Product.belongsTo(Category);
 
-Product.hasMany(Rating);
-Rating.belongsTo(Product);
-
-Product.hasMany(BasketProduct);
-BasketProduct.belongsTo(Product);
-
 Product.hasMany(ProductInfo, { as: 'info' });
 ProductInfo.belongsTo(Product);
 
@@ -115,11 +93,8 @@ Product.hasMany(ProductModification, { as: 'product_modification' });
 ProductModification.belongsTo(Product);
 
 module.exports = {
-  User,
-  BasketProduct,
   Product,
   Category,
-  Rating,
   ProductInfo,
   ProductAttr,
   ProductModification,
